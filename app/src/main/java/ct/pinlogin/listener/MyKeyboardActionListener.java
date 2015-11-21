@@ -79,7 +79,7 @@ public class MyKeyboardActionListener implements OnKeyboardActionListener {
 	public void onPress(int primaryCode) {
 		// TODO Auto-generated method stub
 		KeyPress kp=myActivity.getKeyPress();
-		myActivity.getKpList().add(kp);
+		kp.setKey(primaryCode);
 	}
 
 
