@@ -79,7 +79,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View v) {
                 //get into training mode
                 if(trainMode){
-
+                    classifier.fit(kpList);
                     trainMode=false;
                     button.setBackgroundColor(Color.MAGENTA);
                 }else {
