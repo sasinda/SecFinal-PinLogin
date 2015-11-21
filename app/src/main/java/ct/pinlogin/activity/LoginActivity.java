@@ -43,7 +43,7 @@ public class LoginActivity extends AppCompatActivity {
     private KeyPress keyPress;
     private boolean trainMode=false;
 
-    private Classifier classifier=new Classifier(this.getSharedPreferences("secfinal", Context.MODE_PRIVATE));
+    private Classifier classifier;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,6 +70,8 @@ public class LoginActivity extends AppCompatActivity {
         kbView.setOnTouchListener(new MyPressureListener(kbView, this));
     
         setupChart();
+
+        classifier = new Classifier(getSharedPreferences("secfinal", Context.MODE_PRIVATE));
 
     }
 
