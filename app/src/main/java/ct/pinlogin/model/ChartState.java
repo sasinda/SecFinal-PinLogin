@@ -11,19 +11,15 @@ import lecho.lib.hellocharts.model.SubcolumnValue;
 import lecho.lib.hellocharts.view.ColumnChartView;
 
 /**
- * Created by sasinda on 11/16/15.
+ * Created by sasinda on 11/21/15.
  */
-public class EventList {
+public class ChartState {
 
     ColumnChartData data=new ColumnChartData();
     List<SubcolumnValue> values =new ArrayList<>();
 
 
-    List<KeyPress> list=new ArrayList<>();
-
-
-
-    public void updateChart(ColumnChartView chart, KeyPress kp){
+    public void update(ColumnChartView chart, KeyPress kp){
         SubcolumnValue tval = new SubcolumnValue();
         tval.setColor(Color.MAGENTA);
         tval.setValue(kp.getDuration());
@@ -46,25 +42,5 @@ public class EventList {
         data.setColumns(cols);
         chart.setColumnChartData(data);
         chart.refreshDrawableState();
-    }
-
-    public boolean add(KeyPress object) {
-        return list.add(object);
-    }
-
-    public KeyPress get(int location) {
-        return list.get(location);
-    }
-
-    public int size() {
-        return list.size();
-    }
-
-    public boolean isEmpty() {
-        return list.isEmpty();
-    }
-
-    public void clear() {
-        list.clear();
     }
 }

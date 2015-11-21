@@ -16,20 +16,25 @@
 
 package ct.pinlogin.listener;
 
-import android.app.Activity;
 import android.inputmethodservice.KeyboardView.OnKeyboardActionListener;
 import android.view.KeyEvent;
 
+import ct.pinlogin.activity.LoginActivity;
+import ct.pinlogin.model.ChartState;
+import ct.pinlogin.model.KeyPress;
+
 public class MyKeyboardActionListener implements OnKeyboardActionListener {
 
-	private Activity myTargetActivity;
+	private LoginActivity myActivity;
+
 
 	/**
 	 * activity which generates this keyboard
 	 * @param targetActivity
 	 */
-	public MyKeyboardActionListener(Activity targetActivity) {
-		myTargetActivity = targetActivity;
+	public MyKeyboardActionListener(LoginActivity targetActivity) {
+		myActivity = targetActivity;
+
 	}
 
 	@Override
@@ -65,13 +70,16 @@ public class MyKeyboardActionListener implements OnKeyboardActionListener {
 	@Override
 	public void onRelease(int primaryCode) {
 		// TODO Auto-generated method stub
-
+		myActivity.updateChart();
+		//add keypress to list and set current to null
+		myActivity.setKeyPress(null);
 	}
 
 	@Override
 	public void onPress(int primaryCode) {
 		// TODO Auto-generated method stub
-
+		KeyPress kp=myActivity.getKeyPress();
+		myActivity.getKpList().add(kp);
 	}
 
 
@@ -82,6 +90,6 @@ public class MyKeyboardActionListener implements OnKeyboardActionListener {
 		KeyEvent event = new KeyEvent(eventTime, eventTime,
 				KeyEvent.ACTION_DOWN, primaryCode, 0, 0, 0, 0,
 				KeyEvent.FLAG_SOFT_KEYBOARD | KeyEvent.FLAG_KEEP_TOUCH_MODE);
-		myTargetActivity.dispatchKeyEvent(event);
+		myActivity.dispatchKeyEvent(event);
 	}
 }
