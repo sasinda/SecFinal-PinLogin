@@ -27,7 +27,7 @@ public class MyPressureListener implements View.OnTouchListener {
     @Override
     public boolean onTouch(View v, MotionEvent event) {
         Log.i("keyPressure", "" + event.getPressure());
-        Log.i("action" + event.getAction());
+        Log.i("action","" + event.getAction());
 
         KeyPress kp=myAct.getKeyPress();
         if(kp==null){

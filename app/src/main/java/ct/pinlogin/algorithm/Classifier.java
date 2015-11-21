@@ -1,19 +1,28 @@
 package ct.pinlogin.algorithm;
+
 import java.util.List;
+
 import ct.pinlogin.model.KeyPress;
+
 import com.google.gson.Gson;
+
 import android.content.SharedPreferences;
+
 import java.lang.reflect.Type;
+
 import com.google.gson.reflect.TypeToken;
+
 /**
  * Created by Velicue on 2015/11/21.
  */
-public class MyClassifier {
+public class Classifier {
     SharedPreferences pref;
-    public MyClassifier(SharedPreferences _pref) {
+
+    public Classifier(SharedPreferences _pref) {
         pref = _pref;
     }
-    public void fit(List<KeyPress> keys){
+
+    public void fit(List<KeyPress> keys) {
         Gson gson = new Gson();
         String json = gson.toJson(keys);
         SharedPreferences.Editor editor = pref.edit();
@@ -49,6 +58,7 @@ public class MyClassifier {
         durationE /= train.size();
         pressureE /= train.size();
         if (durationE > 300) return false;
-        if (pressureE > 0.06) return false; else return true;
+        if (pressureE > 0.06) return false;
+        else return true;
     }
 }

@@ -1,7 +1,11 @@
 package ct.pinlogin.activity;
 
+import android.content.Context;
+import android.graphics.Color;
 import android.inputmethodservice.Keyboard;
 import android.os.Bundle;
+import android.support.annotation.ColorRes;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MotionEvent;
@@ -16,6 +20,7 @@ import java.security.Key;
 import java.util.ArrayList;
 import java.util.List;
 
+import ct.pinlogin.algorithm.Classifier;
 import ct.pinlogin.model.ChartState;
 import ct.pinlogin.model.KeyPress;
 import ct.pinlogin.views.CustomKeyboardView;
@@ -27,6 +32,7 @@ import lecho.lib.hellocharts.view.ColumnChartView;
 
 public class LoginActivity extends AppCompatActivity {
 
+    private FloatingActionButton button;
     private CustomKeyboardView kbView;
     private View targetView;
     private Keyboard kb;
@@ -35,14 +41,17 @@ public class LoginActivity extends AppCompatActivity {
 
     private List<KeyPress> kpList=new ArrayList<>();
     private KeyPress keyPress;
+    private boolean trainMode=false;
 
+    private Classifier classifier=new Classifier(this.getSharedPreferences("secfinal", Context.MODE_PRIVATE));
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+        button= (FloatingActionButton) findViewById(R.id.fab);
+        configButton();
         //setup custom keyboard
         kb = new Keyboard(this, R.xml.keyboard);
         targetView = (EditText) findViewById(R.id.pinInput);
@@ -62,6 +71,24 @@ public class LoginActivity extends AppCompatActivity {
     
         setupChart();
 
+    }
+
+    private void configButton() {
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //get into training mode
+                if(trainMode){
+
+                    trainMode=false;
+                    button.setBackgroundColor(Color.MAGENTA);
+                }else {
+                    trainMode=true;
+                    button.setBackgroundColor(Color.GREEN);
+                }
+                kpList=new ArrayList<KeyPress>();
+            }
+        });
     }
 
     private void setupChart() {
@@ -90,7 +117,6 @@ public class LoginActivity extends AppCompatActivity {
         if (id == R.id.action_settings) {
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 

@@ -32,8 +32,9 @@
         android:layout_width="match_parent"
         android:layout_height="120dp"
         android:layout_centerVertical="true"
+        android:layout_marginTop="100dp"
         android:layout_alignLeft="@+id/pinInput"
-        android:layout_alignBottom="@+id/pinInput" />
+        android:layout_alignTop="@+id/pinInput" />
 
     <ct.pinlogin.views.CustomKeyboardView
         android:layout_width="fill_parent"
