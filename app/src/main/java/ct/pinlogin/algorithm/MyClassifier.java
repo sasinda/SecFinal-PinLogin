@@ -48,7 +48,7 @@ public class MyClassifier {
         }
         durationE /= train.size();
         pressureE /= train.size();
-        if (durationE > 300) return false; else return true;
+        if (durationE > 300) return false;
         if (pressureE > 0.06) return false; else return true;
     }
 }
