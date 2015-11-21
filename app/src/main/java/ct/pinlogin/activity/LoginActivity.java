@@ -187,7 +187,9 @@ public class LoginActivity extends AppCompatActivity {
 
     public void setKeyPress(KeyPress keyPress) {
         this.keyPress = keyPress;
-        kpList.add(keyPress);
+        if(keyPress!=null){
+            kpList.add(keyPress);
+        }
     }
 
     public List<KeyPress> getKpList() {
