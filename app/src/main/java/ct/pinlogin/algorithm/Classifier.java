@@ -7,6 +7,7 @@ import ct.pinlogin.model.KeyPress;
 import com.google.gson.Gson;
 
 import android.content.SharedPreferences;
+import android.util.Log;
 
 import java.lang.reflect.Type;
 
@@ -52,12 +53,14 @@ public class Classifier {
             double dte = keys.get(i).getDuration();
             double ptr = train.get(i).getPressure();
             double pte = keys.get(i).getPressure();
+            if (train.get(i).getKey() != keys.get(i).getKey()) return false;
             durationE += (dtr - dte) * (dtr - dte) / (dtr + dc);
-            pressureE += (dtr - dte) * (dtr - dte) / (dtr + dc);
+            pressureE += (ptr - pte) * (ptr - pte) / (pte + pc);
         }
         durationE /= train.size();
         pressureE /= train.size();
-        if (durationE > 300) return false;
+        Log.e("velicue", "Error: " + durationE + " " + pressureE);
+        if (durationE > 10) return false;
         if (pressureE > 0.06) return false;
         else return true;
     }
