@@ -12,6 +12,12 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 
+import java.security.Key;
+import java.util.ArrayList;
+import java.util.List;
+
+import ct.pinlogin.model.ChartState;
+import ct.pinlogin.model.KeyPress;
 import ct.pinlogin.views.CustomKeyboardView;
 import ct.pinlogin.listener.MyKeyboardActionListener;
 import ct.pinlogin.listener.MyPressureListener;
@@ -25,7 +31,10 @@ public class LoginActivity extends AppCompatActivity {
     private View targetView;
     private Keyboard kb;
     private ColumnChartView chart;
+    private ChartState chartState=new ChartState();
 
+    private List<KeyPress> kpList=new ArrayList<>();
+    private KeyPress keyPress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,9 +96,6 @@ public class LoginActivity extends AppCompatActivity {
 
 
 
-
-
-
     private void showKeyboardWithAnimation() {
         if (kbView.getVisibility() == View.GONE) {
             Animation animation = AnimationUtils
@@ -101,5 +107,22 @@ public class LoginActivity extends AppCompatActivity {
 
     public ColumnChartView getChart() {
         return chart;
+    }
+
+    public KeyPress getKeyPress() {
+        return keyPress;
+    }
+
+    public void setKeyPress(KeyPress keyPress) {
+        this.keyPress = keyPress;
+        kpList.add(keyPress);
+    }
+
+    public List<KeyPress> getKpList() {
+        return kpList;
+    }
+
+    public void updateChart() {
+        chartState.update(chart,keyPress);
     }
 }

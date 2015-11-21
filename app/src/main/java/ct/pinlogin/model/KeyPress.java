@@ -1,14 +1,20 @@
 package ct.pinlogin.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by sasinda on 11/16/15.
  */
 public class KeyPress {
-    private long startAt;
-    private long endAt;
-    private long duration;
+    private long startAt=Long.MAX_VALUE;
+    private long endAt=Long.MIN_VALUE;
     private double startPressure;
     private double endPressure;
+    private long duration;
+    private List<Double> pressurePoints=new ArrayList<>();
+    private double pressure;
+    private int key;
 
     public long getStartAt() {
         return startAt;
@@ -46,5 +52,25 @@ public class KeyPress {
 
     public void setEndPressure(double endPressure) {
         this.endPressure = endPressure;
+    }
+
+    public double getPressure() {
+        return pressure;
+    }
+
+    public void setPressure(double pressure) {
+        this.pressure = pressure;
+    }
+
+    public int getKey() {
+        return key;
+    }
+
+    public void setKey(int key) {
+        this.key = key;
+    }
+
+    public void addPressurePoint(double pressure){
+        pressurePoints.add(pressure);
     }
 }

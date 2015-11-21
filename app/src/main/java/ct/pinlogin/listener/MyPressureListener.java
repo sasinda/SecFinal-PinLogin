@@ -5,7 +5,6 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import ct.pinlogin.activity.LoginActivity;
-import ct.pinlogin.model.EventList;
 import ct.pinlogin.model.KeyPress;
 
 /**
@@ -14,8 +13,6 @@ import ct.pinlogin.model.KeyPress;
 public class MyPressureListener implements View.OnTouchListener {
 
     View myView;
-    EventList list=new EventList();
-    int currentEvent=0;
     LoginActivity myAct;
     /**
      *
@@ -31,20 +28,21 @@ public class MyPressureListener implements View.OnTouchListener {
     public boolean onTouch(View v, MotionEvent event) {
         Log.i("keyPressure", "" + event.getPressure());
 
-        KeyPress kp;
-        if(event.getAction()==MotionEvent.ACTION_DOWN){
+        KeyPress kp=myAct.getKeyPress();
+        if(kp==null){
+            //init for next keypress
             kp = new KeyPress();
+            myAct.setKeyPress(kp);
             kp.setStartAt(event.getDownTime());
             kp.setStartPressure(event.getPressure());
-            list.add(kp);
+        }
+        if(event.getAction()==MotionEvent.ACTION_DOWN){
+            kp.addPressurePoint(event.getPressure());
         }
         if(event.getAction()==MotionEvent.ACTION_UP){
-            kp=list.get(currentEvent);
-            assert kp.getStartAt()==event.getDownTime();
+            kp.addPressurePoint(event.getPressure());
             kp.setEndAt(event.getEventTime());
             kp.setEndPressure(event.getPressure());
-            list.updateChart( myAct.getChart(),kp);
-            currentEvent++;
         }
         return myView.onTouchEvent(event);
     }
