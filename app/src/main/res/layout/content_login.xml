@@ -25,7 +25,8 @@
         android:id="@+id/pinInput"
         android:layout_marginTop="50dp"
         android:layout_below="@+id/textView"
-        android:layout_centerHorizontal="true" />
+        android:layout_alignRight="@+id/textView"
+        android:layout_alignEnd="@+id/textView" />
 
     <lecho.lib.hellocharts.view.ColumnChartView
         android:id="@+id/chart"
@@ -44,6 +45,15 @@
         android:layout_marginLeft="0dp"
         android:layout_marginTop="0dp"
         android:layout_marginBottom="0dp" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Login"
+        android:id="@+id/btnLogin"
+        android:layout_alignBottom="@+id/pinInput"
+        android:layout_toRightOf="@+id/pinInput"
+        android:layout_toEndOf="@+id/pinInput" />
 
 
 </RelativeLayout>

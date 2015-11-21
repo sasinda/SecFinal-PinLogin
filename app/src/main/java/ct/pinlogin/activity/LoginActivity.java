@@ -1,10 +1,12 @@
 package ct.pinlogin.activity;
 
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.inputmethodservice.Keyboard;
 import android.os.Bundle;
-import android.support.annotation.ColorRes;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -14,9 +16,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Button;
 import android.widget.EditText;
 
-import java.security.Key;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,16 +34,18 @@ import lecho.lib.hellocharts.view.ColumnChartView;
 
 public class LoginActivity extends AppCompatActivity {
 
-    private FloatingActionButton button;
+    private Activity me=this;
+    private FloatingActionButton btnTrain;
+    private Button btnLogin;
     private CustomKeyboardView kbView;
-    private View targetView;
+    private EditText pinInput;
     private Keyboard kb;
     private ColumnChartView chart;
-    private ChartState chartState=new ChartState();
+    private ChartState chartState = new ChartState();
 
-    private List<KeyPress> kpList=new ArrayList<>();
+    private List<KeyPress> kpList = new ArrayList<>();
     private KeyPress keyPress;
-    private boolean trainMode=false;
+    private boolean trainMode = false;
 
     private Classifier classifier;
     @Override
@@ -50,12 +54,13 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        button= (FloatingActionButton) findViewById(R.id.fab);
+        btnTrain = (FloatingActionButton) findViewById(R.id.fab);
+        btnLogin = (Button) findViewById(R.id.btnLogin);
         configButton();
         //setup custom keyboard
         kb = new Keyboard(this, R.xml.keyboard);
-        targetView = (EditText) findViewById(R.id.pinInput);
-        targetView.setOnTouchListener(new View.OnTouchListener() {
+        pinInput = (EditText) findViewById(R.id.pinInput);
+        pinInput.setOnTouchListener(new View.OnTouchListener() {
 
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -76,22 +81,61 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void configButton() {
-        button.setOnClickListener(new View.OnClickListener() {
+        btnTrain.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //get into training mode
-                if(trainMode){
+                if (trainMode) {
+                    //when exit training mode fit the model with recorded data
                     classifier.fit(kpList);
-                    trainMode=false;
-                    button.setBackgroundColor(Color.MAGENTA);
-                }else {
-                    trainMode=true;
-                    button.setBackgroundColor(Color.GREEN);
+                    trainMode = false;
+                    btnTrain.setColorFilter(Color.RED);
+                } else {
+                    //activate training mode
+                    trainMode = true;
+                    btnTrain.setColorFilter(Color.GREEN);
                 }
+                //reset state
+                kpList = new ArrayList<KeyPress>();
+                chartState=new ChartState();
+                chart.refreshDrawableState();
+                pinInput.setText("");
+            }
+        });
+
+        btnLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                boolean predict = classifier.predict(kpList);
+                //reset state
+                pinInput.setText("");
+                chartState=new ChartState();
+                chart.refreshDrawableState();
                 kpList=new ArrayList<KeyPress>();
+
+                //Alert Box
+                AlertDialog.Builder alt_bld = new AlertDialog.Builder(me);
+                if (predict) {
+                    alt_bld.setMessage("Login Success");
+                } else {
+                    alt_bld.setMessage("Login Failed, Try Again");
+                    kpList = new ArrayList<KeyPress>();
+                    chartState = new ChartState();
+                }
+                alt_bld.setCancelable(true);
+                alt_bld.setPositiveButton("yes", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // TODO Auto-generated method stub
+                    }
+                });
+//                alt_bld.create();
+                alt_bld.show();
             }
         });
     }
+
+
+
 
     private void setupChart() {
         chart = (ColumnChartView) findViewById(R.id.chart);
@@ -151,6 +195,6 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void updateChart() {
-        chartState.update(chart,keyPress);
+        chartState.update(chart, keyPress);
     }
 }
