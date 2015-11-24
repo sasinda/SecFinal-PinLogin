@@ -55,6 +55,11 @@ public class KeyPress {
     }
 
     public double getPressure() {
+        for (int i = 0; i < pressurePoints.size(); i++)
+        {
+            pressure += pressurePoints.get(i);
+        }
+        if (pressurePoints.size() != 0) pressure /= pressurePoints.size();
         return pressure;
     }
 
